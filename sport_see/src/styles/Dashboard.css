@@ -1,0 +1,64 @@
+.Dashboard{
+  width: 80%;
+  margin: auto;
+}
+
+h1 span{
+  color: #FF0000;
+}
+
+.userData{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.keyData{
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 100px 0;
+}
+
+.data{
+  border: 1px solid black;
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.iconData{
+  width: 60px;
+  height: 60px;
+}
+
+.unitData{
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.unitData p{
+  margin: 0;
+}
+
+.unitData span{
+  font-size: 10px;
+}
+
+.diagramme{
+  display: flex;
+  flex-direction: column;
+}
+
+.square{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
