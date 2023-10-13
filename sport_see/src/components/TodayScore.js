@@ -12,9 +12,9 @@ export default function TodayScore(props) {
   });
 
   async function getScore(){
-    await getTodayScoreService(12).then((response) => {
-      let data = [];
-      data.push({"name": 'Score', "value": response.todayScore, "fill": '#ff0000'})
+    await getTodayScoreService(props.userId).then((response) => {
+      let data = [{"name": 'Score', "value": 100, "background": 100, "fill": '#ffffff'}];
+      data.push({"name": 'Score', "value": response.todayScore*100, "background": 100, "fill": '#ff0000'})
       setDataScore(data);
     })
   };
@@ -23,11 +23,11 @@ export default function TodayScore(props) {
     <div className='todayScore'>
       <h2>Score</h2>
       <RadialBarChart
-        cx="50%"
-        cy="50%"
+        cx={150} 
+        cy={150}
         width={300}
         height={300}
-        innerRadius="70%"
+        innerRadius="60%"
         outerRadius="80%"
         data={dataScore}
         startAngle={210}
@@ -35,7 +35,8 @@ export default function TodayScore(props) {
       >
         <RadialBar
           minAngle={15}
-          background={{ fill: '#ffffff' }}
+          label={{ position: 'insideStart', fill: '#fff' }}
+          background
           clockWise
           cornerRadius={10}
           dataKey="value"

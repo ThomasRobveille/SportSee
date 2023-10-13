@@ -6,3 +6,8 @@
   align-items: center;
   background: #FF0000;
 }
+
+.sessionLabel{
+  background: white;
+  padding: 5px;
+}

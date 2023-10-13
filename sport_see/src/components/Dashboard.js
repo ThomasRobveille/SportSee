@@ -15,6 +15,13 @@ import SessionChart from './SessionChart';
 
 
 export default function Dashboard() {
+  const [userId, setUserId] = useState(12);
+
+  function switchUser(){
+    if(userId === 12) setUserId(18);
+    else setUserId(12);
+  }
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState('');
   const [score, setScore] = useState(0);
@@ -25,8 +32,7 @@ export default function Dashboard() {
   const [dataPerformance, setDataPerformance] = useState([]);
 
   function getName() {
-    axios.get('http://localhost:3000/user/12').then((response) => {
-      console.log(response.data);
+    axios.get('http://localhost:3000/user/'+ userId).then((response) => {
       setFirstName(response.data.data.userInfos.firstName);
       setLastName(response.data.data.userInfos.lastName);
       setScore(response.data.data.todayScore);
@@ -34,21 +40,6 @@ export default function Dashboard() {
       setProtein(response.data.data.keyData.proteinCount);
       setCarbohydrate(response.data.data.keyData.carbohydrateCount);
       setLipid(response.data.data.keyData.lipidCount);
-    });
-  }
-
-  function getPerformance(){
-    axios.get('http://localhost:3000/user/12/performance').then((response) => {
-      let data = [];
-      response.data.data.data.map((item) => {
-        if(item.kind === 1) data.push({subject: 'cardio', value: item.value, fullMark: 200})
-        if(item.kind === 2) data.push({subject: 'energy', value: item.value, fullMark: 200})
-        if(item.kind === 3) data.push({subject: 'endurance', value: item.value, fullMark: 200})
-        if(item.kind === 4) data.push({subject: 'strength', value: item.value, fullMark: 200})
-        if(item.kind === 5) data.push({subject: 'speed', value: item.value, fullMark: 200})
-        if(item.kind === 6) data.push({subject: 'intensity', value: item.value, fullMark: 200})
-      })
-      return data
     });
   }
 
@@ -61,21 +52,22 @@ export default function Dashboard() {
       <div>
         <h1>Bonjour <span>{ firstName }</span></h1>
         <span>Félicitation ! Vous avez explosé vos objectifs hier 👏</span>
+        <button className='switch' onClick={() => switchUser()}>switch user</button>
       </div>
       <div className='userData'>
         <div className='diagramme'>
           <div className='one'>
-            <DailyActivity/>
+            <DailyActivity userId={userId}/>
           </div>
           <div className='square'>
             <div>
-              <SessionChart/>
+              <SessionChart userId={userId}/>
             </div>
             <div>
-              <RadarUser data={dataPerformance}/>
+              <RadarUser data={dataPerformance} userId={userId}/>
             </div>
             <div>
-              <TodayScore score={score}/>
+              <TodayScore score={score} userId={userId}/>
             </div>
           </div>          
         </div>

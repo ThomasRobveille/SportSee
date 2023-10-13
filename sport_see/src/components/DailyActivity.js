@@ -4,7 +4,7 @@ import { getDailyActivityService } from '../services/DailyActivity'
 
 import '../styles/DailyActivity.css';
 
-export default function DailyActivity() {
+export default function DailyActivity(props) {
   const [dataDaily, setDataDaily] = useState([]);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ export default function DailyActivity() {
   })
 
   async function getDaily(){
-    await getDailyActivityService(12).then((response) => {
+    await getDailyActivityService(props.userId).then((response) => {
       let data = [];
       response.sessions.map((item) => {
         let format = item.day.split('-');
@@ -22,6 +22,18 @@ export default function DailyActivity() {
       setDataDaily(data);
     })
   }
+
+  const CustomTooltip = ({ active, payload, label }) => {
+    console.log(payload)
+    if (active) {
+      return (
+        <div className="custom-tooltip">
+          <p className="label sessionLabel">{`${payload[0].value} min`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return(
     <div className='dailyActivity'>
@@ -41,8 +53,8 @@ export default function DailyActivity() {
         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
       >          
         <XAxis dataKey="name" />
-        <YAxis dataKey="kilogramme" orientation='right'/>
-        <Tooltip />
+        <YAxis dataKey="calories" orientation='right'/>
+        <Tooltip content={<CustomTooltip/>}/>
         <Bar 
           dataKey="kilogramme" 
           fill="#000" 

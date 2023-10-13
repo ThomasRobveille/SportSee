@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis } from 'recharts';
 import { getRadarUserService } from '../services/RadarUser'
 
-import axios from 'axios';
 import '../styles/RadarUser.css';
 
-export default function RadarUser() {
+export default function RadarUser(props) {
   const [dataPerformance, setDataPerformance] = useState([]);
 
   useEffect(() => {
@@ -13,7 +12,7 @@ export default function RadarUser() {
   });
 
   async function getPerformance(){
-    await getRadarUserService(12).then((response) => {
+    await getRadarUserService(props.userId).then((response) => {
       let data = [];
       response.data.map((item) => {
         if(item.kind === 1) data.push({"subject": 'Cardio', "A": item.value, "fullMark": 200})
