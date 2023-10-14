@@ -14,7 +14,6 @@ export default function Home() {
         <Sidebar/>
         <Dashboard/>
       </div>
-      {/* <Rechart/> */}
     </div>
   );
 }

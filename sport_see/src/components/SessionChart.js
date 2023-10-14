@@ -44,38 +44,41 @@ export default function SessionChart(props) {
   };
 
   return(
-    <div className='sessionChart'>
-      <LineChart
-       width={250} 
-       height={250} 
-       strokeWidth={1} 
-       data={dataSession} 
-       margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-       onMouseMove={(e) => {
-        console.log(e)
-        setCursorX(e.activeTooltipIndex)
-        setShowReference(true)
-      }}
-       onMouseLeave={() => setShowReference(false)}
-       >
-        <XAxis 
-          type="category"
-          dataKey="name"
-          tickLine={true}
-          stroke="red"
-          padding={{right:5, left:5}}
-          tick={{ fontSize: 13, stroke: "white", opacity: 0.8}}
-          cursor="crosshair"
-        />
-        <Tooltip content={<CustomTooltip/>}/> 
-        <Line type="monotone" dataKey="value" stroke="#fff" />
-        {showReference !== null && (
-          <ReferenceArea
-            x1={cursorX}
-            fillOpacity={0.3}
+    <div className='sessionContainer'>
+      <h2 className='titleSession'>Durée moyenne des sessions</h2>
+      <div className='sessionChart'>      
+        <LineChart
+          width={250} 
+          height={250} 
+          strokeWidth={1} 
+          data={dataSession} 
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          onMouseMove={(e) => {
+            setCursorX(e.activeTooltipIndex)
+            setShowReference(true)
+          }}
+          onMouseLeave={() => setShowReference(false)}
+          >
+          <XAxis 
+            type="category"
+            dataKey="name"
+            tickLine={true}
+            stroke="red"
+            padding={{right:5, left:5}}
+            tick={{ fontSize: 13, stroke: "white", opacity: 0.8}}
+            cursor="crosshair"
           />
-        )}
-      </LineChart>
+          <Tooltip content={<CustomTooltip/>}/> 
+          <Line type="monotone" dataKey="value" stroke="#fff" />
+          {showReference !== null && (
+            <ReferenceArea
+              x1={cursorX}
+              fillOpacity={0.3}
+            />
+          )}
+        </LineChart>
+      </div>
     </div>
+    
   )
 }

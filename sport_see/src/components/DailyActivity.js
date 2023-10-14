@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { getDailyActivityService } from '../services/DailyActivity'
 
 import '../styles/DailyActivity.css';
@@ -9,26 +9,30 @@ export default function DailyActivity(props) {
 
   useEffect(() => {
     getDaily();
-  })
+  }, [])
 
   async function getDaily(){
-    await getDailyActivityService(props.userId).then((response) => {
-      let data = [];
-      response.sessions.map((item) => {
-        let format = item.day.split('-');
-        let day = format[2];
-        data.push({"name": day, "kilogramme": item.kilogram, "calories": item.calories})
+    try {
+      await getDailyActivityService(props.userId).then((response) => {
+        let data = [];
+        response.sessions.map((item) => {
+          let format = item.day.split('-');
+          let day = format[2];
+          data.push({"name": day, "kilogramme": item.kilogram, "calories": item.calories})
+        })
+        setDataDaily(data);
       })
-      setDataDaily(data);
-    })
+    } catch (error) {
+      console.log(error)
+    }   
   }
 
   const CustomTooltip = ({ active, payload, label }) => {
-    console.log(payload)
     if (active) {
       return (
-        <div className="custom-tooltip">
-          <p className="label sessionLabel">{`${payload[0].value} min`}</p>
+        <div className="custom-tooltip daily-tooltip">
+          <p className="label dailyLabel">{`${payload[0].payload.kilogramme} kg`}</p>
+          <p className="label dailyLabel">{`${payload[0].payload.calories} kCal`}</p>
         </div>
       );
     }
@@ -51,9 +55,10 @@ export default function DailyActivity(props) {
         height={300} 
         data={dataDaily}
         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-      >          
+      >     
+        <CartesianGrid strokeDasharray="3 3" vertical={false}/>     
         <XAxis dataKey="name" />
-        <YAxis dataKey="calories" orientation='right'/>
+        <YAxis dataKey="calories" orientation='right' axisLine={false} tickLine={false}/>
         <Tooltip content={<CustomTooltip/>}/>
         <Bar 
           dataKey="kilogramme" 
